@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+    jupyter:
+        build: 
+            dockerfile: Dockerfile
+            context: ./analytics 
+        volumes:
+            - ./analytics/notebooks:/home/jovyan/work
+        ports:
+            - "8888:8888"
+    db:
+        build: 
+            dockerfile: Dockerfile
+            context: ./database
+        volumes:
+            - ./database/data:/var/lib/postgresql/data/
+        hostname: postgres
+        restart: always
+        ports:
+            - "5432:5432"
+        env_file:
+            - .env
+        environment:
+            PGDATA: /var/lib/postgresql/data/pgdata
